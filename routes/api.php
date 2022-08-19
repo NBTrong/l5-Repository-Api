@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/register', 'register');
+});
+
+Route::middleware(('auth:sanctum'))->group(function () {
+    Route::group(["prefix" => 'blogs'], function () {
+        Route::get('/', [BlogsController::class, 'index']);
+        Route::post('/', [BlogsController::class, 'store']);
+        Route::get('/{id}', [BlogsController::class, 'show']);
+        Route::put('/{id}', [BlogsController::class, 'update']);
+        Route::delete('/{id}', [BlogsController::class, 'destroy']);
+    });
 });
